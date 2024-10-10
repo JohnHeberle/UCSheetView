@@ -12,7 +12,7 @@ UCSheetView aims to resolve this by providing a configurable UIView subclass tha
 
 | Bottom Sheet | Sheet Above Subview |
 |-|-|
-|![Bottom Sheet Recording](https://github.com/user-attachments/assets/9757647e-392d-4170-aaa1-92997bc1dc70)|![Sheet Above Subview Recording](https://github.com/user-attachments/assets/1a7cac45-96f0-4663-b706-3b5c9bb848a0)
+|![Bottom Sheet Recording](https://github.com/user-attachments/assets/9757647e-392d-4170-aaa1-92997bc1dc70)|![Sheet Above Subview Recording](https://github.com/user-attachments/assets/1a7cac45-96f0-4663-b706-3b5c9bb848a0)|
 
 
 
