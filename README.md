@@ -10,6 +10,10 @@ PageSheet's primary limitation is it is always presented from the bottom of the 
 
 UCSheetView aims to resolve this by providing a configurable UIView subclass that reacts to user input similarly to PageSheet.
 
+| Bottom Sheet | Sheet Above Subview |
+|-|-|
+|![Bottom Sheet](https://github.com/user-attachments/assets/486c14cb-7e27-4786-804a-105fde1d2d38)|![Sheet Above Subview](https://github.com/user-attachments/assets/af4e5d35-3eea-483c-b3f8-82fc78e6bbc1)|
+
 ### ToDos
 - Add Tests
   - SheetDetentsModel
