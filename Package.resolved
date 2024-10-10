@@ -1,0 +1,15 @@
+{
+  "originHash" : "f6183e3bea6d991f20cf12f8e404084629cfe0bdc19fc7a8a5ae50f95ddd5264",
+  "pins" : [
+    {
+      "identity" : "swift-issue-reporting",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-issue-reporting.git",
+      "state" : {
+        "revision" : "770f990d3e4eececb57ac04a6076e22f8c97daeb",
+        "version" : "1.4.2"
+      }
+    }
+  ],
+  "version" : 3
+}
