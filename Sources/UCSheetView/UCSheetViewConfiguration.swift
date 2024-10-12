@@ -5,16 +5,17 @@
 //  Created by John Heberle on 10/7/24.
 //
 
-import UIKit
 import os
+import UIKit
 
 extension UCSheetView {
   public struct Configuration {
-    
+
     // MARK: Lifecycle
-    
+
     #if DEBUG
-    @_transparent init(
+    @_transparent
+    init(
       detents: [SheetDetent],
       largestUnDimmedDetentIdentifier: SheetDetent.Identifier? = nil,
       maxDimmingAlpha: CGFloat = 0.35,
@@ -35,12 +36,13 @@ extension UCSheetView {
       self.shadowColor = shadowColor
       self.shadowOpacity = shadowOpacity
       self.shadowRadius = shadowRadius
-      
+
       sanitizeConfiguration(withIssueReporter: &issueReporter)
     }
     #endif
-    
-    @_transparent public init(
+
+    @_transparent
+    public init(
       detents: [SheetDetent],
       largestUnDimmedDetentIdentifier: SheetDetent.Identifier? = nil,
       maxDimmingAlpha: CGFloat = 0.35,
@@ -60,15 +62,15 @@ extension UCSheetView {
       self.shadowColor = shadowColor
       self.shadowOpacity = shadowOpacity
       self.shadowRadius = shadowRadius
-      
+
       #if DEBUG
       var issueReporter: any IssueReportingProtocol = IssueReporter()
       sanitizeConfiguration(withIssueReporter: &issueReporter)
       #endif
     }
-    
-    // MARK: Internal
-    
+
+    // MARK: Public
+
     public let detents: [SheetDetent]
     public let largestUnDimmedDetentIdentifier: SheetDetent.Identifier?
     public let maxDimmingAlpha: CGFloat
@@ -78,34 +80,29 @@ extension UCSheetView {
     public let shadowColor: CGColor
     public let shadowOpacity: Float
     public let shadowRadius: CGFloat
-    
+
+    // MARK: Internal
+
     #if DEBUG
     @usableFromInline @_transparent
     func sanitizeConfiguration(withIssueReporter issueReporter: inout any IssueReportingProtocol) {
       if detents.isEmpty {
-        let invalidDetentsWarning = "`detents` passed to UCSheetView.Configuration is empty. Default detents will be used but can result in unexpected behavior."
-        // reportIssue(invalidDetentsWarning)
-        reportIssue(on: &issueReporter, invalidDetentsWarning)
+        reportIssue(on: &issueReporter, AlertMessages.invalidDetentsWarning)
       }
-      if Set(detents.map { $0.identifier } ).count != detents.count {
-        let identicalDetentIdentifiersWarning = "`detents` passed to UCSheetView.Configuration contains multiple detents with the same identifier. `detents` must use unique identifiers. Any detent identified by a previously used identifier will be ignored."
-        // reportIssue(identicalDetentIdentifiersWarning)
-        reportIssue(on: &issueReporter, identicalDetentIdentifiersWarning)
+      if Set(detents.map { $0.identifier }).count != detents.count {
+        reportIssue(on: &issueReporter, AlertMessages.identicalDetentIdentifiersWarning)
       }
-      if !Set(detents.map { $0.identifier } ).contains(.default) {
-        let invalidDefaultDetentWarning = "`detents` passed to UCSheetView.Configuration does not contain a default detent. The default detent will be set to the smallest detent in the `detents` array after resolving heights."
-        reportIssue(on: &issueReporter, invalidDefaultDetentWarning)
-        // reportIssue(invalidDefaultDetentWarning)
+      if !Set(detents.map { $0.identifier }).contains(.default) {
+        reportIssue(on: &issueReporter, AlertMessages.invalidDefaultDetentWarning)
       }
       if
-        let largestUnDimmedDetentIdentifier = largestUnDimmedDetentIdentifier,
-        !Set(detents.map { $0.identifier } ).contains(largestUnDimmedDetentIdentifier) {
-        let invalidLargestUnDimmedDetentIdentifierWarning = "`largestUnDimmedDetentIdentifier` is not contained in the `detents` passed to UCSheetView.Configuration. The specified `largestUnDimmedDetentIdentifier` will be ignored."
-        reportIssue(on: &issueReporter, invalidLargestUnDimmedDetentIdentifierWarning)
-        // reportIssue(invalidLargestUnDimmedDetentIdentifierWarning)
+        let largestUnDimmedDetentIdentifier,
+        !Set(detents.map { $0.identifier }).contains(largestUnDimmedDetentIdentifier)
+      {
+        reportIssue(on: &issueReporter, AlertMessages.invalidLargestUnDimmedDetentIdentifierWarning)
       }
     }
-    
+
     @usableFromInline @_transparent
     func reportIssue(
       on issueReporter: inout any IssueReportingProtocol,
@@ -119,6 +116,6 @@ extension UCSheetView {
       issueReporter.reportIssue(message, logType, fileID: fileID, filePath: filePath, line: line, column: column)
     }
     #endif
-    
+
   }
 }

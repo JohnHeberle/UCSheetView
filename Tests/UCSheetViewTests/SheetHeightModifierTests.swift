@@ -16,7 +16,7 @@ final class SheetHeightModifierTests: XCTestCase {
     XCTAssertFalse(sheetHeightModifier.animate)
     XCTAssertEqual(sheetHeightModifier.state, .started)
   }
-  
+
   func testSheetHeightModifier_Init() {
     let sheetHeightModifier = SheetHeightModifier(updatedHeight: 50, velocity: 5, animate: false, state: .continued)
     XCTAssertEqual(sheetHeightModifier.updatedHeight, 50)
@@ -24,7 +24,7 @@ final class SheetHeightModifierTests: XCTestCase {
     XCTAssertFalse(sheetHeightModifier.animate)
     XCTAssertEqual(sheetHeightModifier.state, .continued)
   }
-  
+
   func testSheetHeightModifier_GetStateFromPanGuestureRecognizer() {
     let stateMapping: [(UIPanGestureRecognizer.State, SheetHeightModifier.State?)] = [
       (.began, .started),

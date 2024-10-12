@@ -20,13 +20,13 @@ final class SheetBackgroundView: UIView {
     layer.masksToBounds = false
     layer.shadowOffset = .zero
     layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    
+
     backgroundColor = sheetConfiguration.backgroundColor
     layer.cornerRadius = sheetConfiguration.cornerRadius
     layer.shadowColor = sheetConfiguration.shadowColor
     layer.shadowOpacity = sheetConfiguration.shadowOpacity
     layer.shadowRadius = sheetConfiguration.shadowRadius
-    
+
     addSubview(contentView)
     NSLayoutConstraint.attatchAnchors(of: contentView, to: self)
   }
@@ -35,15 +35,16 @@ final class SheetBackgroundView: UIView {
 
   var sheetHeight: CurrentValueSubject<CGFloat, Never>?
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    sheetHeight?.send(frame.height)
-  }
-
   lazy var contentView: UIView = {
     let contentView = UIView()
     contentView.translatesAutoresizingMaskIntoConstraints = false
     contentView.clipsToBounds = true
     return contentView
   }()
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    sheetHeight?.send(frame.height)
+  }
+
 }

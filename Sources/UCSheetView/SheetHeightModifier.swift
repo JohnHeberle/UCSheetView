@@ -11,7 +11,13 @@ struct SheetHeightModifier: Equatable {
 
   // MARK: Lifecycle
 
-  init(updatedHeight: CGFloat, velocity: CGFloat = 0, animate: Bool = false, state: State = .started, direction: Direction = .up) {
+  init(
+    updatedHeight: CGFloat,
+    velocity: CGFloat = 0,
+    animate: Bool = false,
+    state: State = .started,
+    direction: Direction = .up
+  ) {
     self.updatedHeight = updatedHeight
     self.velocity = velocity
     self.animate = animate
@@ -24,7 +30,7 @@ struct SheetHeightModifier: Equatable {
   enum State {
     case started, finished, continued
   }
-  
+
   enum Direction {
     case down, up
   }

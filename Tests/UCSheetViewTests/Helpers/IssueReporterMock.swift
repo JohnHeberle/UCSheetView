@@ -10,9 +10,15 @@ import os
 
 struct IssueReporterMock: IssueReportingProtocol {
   private(set) var reportedIssues = Set<String>()
-  
-  mutating func reportIssue(_ message: String, _ logType: OSLogType, fileID: StaticString, filePath: StaticString, line: UInt, column: UInt) {
+
+  mutating func reportIssue(
+    _ message: String,
+    _: OSLogType,
+    fileID _: StaticString,
+    filePath _: StaticString,
+    line _: UInt,
+    column _: UInt
+  ) {
     reportedIssues.insert(message)
   }
 }
-

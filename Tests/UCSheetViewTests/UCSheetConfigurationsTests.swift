@@ -10,7 +10,7 @@ import XCTest
 
 final class UCSheetConfigurationTests: XCTestCase {
   let failedCastToIssueReporterMockMessage = "Failed to cast issueReporterMock as IssueReporterMock"
-  
+
   func testUCSheetConfiguration_DefaultInit() {
     let detents: [SheetDetent] = [.absolute(identifier: .default, height: 100), .fractional(identifier: .medium, divisor: 2)]
     let sheetConfiguration = UCSheetView.Configuration(detents: detents)
@@ -23,7 +23,7 @@ final class UCSheetConfigurationTests: XCTestCase {
     XCTAssertEqual(sheetConfiguration.shadowOpacity, 0.3)
     XCTAssertEqual(sheetConfiguration.shadowRadius, 12)
   }
-  
+
   func testUCSheetConfiguration_InitWithInvalidDetents() {
     var issueReporterMock: any IssueReportingProtocol = IssueReporterMock()
     let _ = UCSheetView.Configuration(detents: [], issueReporter: &issueReporterMock)
@@ -34,7 +34,7 @@ final class UCSheetConfigurationTests: XCTestCase {
     let expectedWarnings = Set<String>([AlertMessages.invalidDetentsWarning, AlertMessages.invalidDefaultDetentWarning])
     XCTAssertEqual(issueReporterMock.reportedIssues, expectedWarnings)
   }
-  
+
   func testUCSheetConfiguration_InitWithInvalidDefaultDetent() {
     var issueReporterMock: any IssueReportingProtocol = IssueReporterMock()
     let _ = UCSheetView.Configuration(
@@ -49,7 +49,7 @@ final class UCSheetConfigurationTests: XCTestCase {
     let expectedWarnings = Set<String>([AlertMessages.invalidDefaultDetentWarning])
     XCTAssertEqual(issueReporterMock.reportedIssues, expectedWarnings)
   }
-  
+
   func testUCSheetConfiguration_InitWithInvalidLargestUndimmedDetentIdentifier() {
     var issueReporterMock: any IssueReportingProtocol = IssueReporterMock()
     let _ = UCSheetView.Configuration(
@@ -65,12 +65,12 @@ final class UCSheetConfigurationTests: XCTestCase {
     let expectedWarnings = Set<String>([AlertMessages.invalidLargestUnDimmedDetentIdentifierWarning])
     XCTAssertEqual(issueReporterMock.reportedIssues, expectedWarnings)
   }
-  
+
   func testUCSheetConfiguration_InitWithNoDefaultDetent() {
     let noDefaultDetent: [SheetDetent] = [
       .absolute(identifier: .small, height: 200),
       .absolute(identifier: .medium, height: 400),
-      .absolute(identifier: .large, height: 600)
+      .absolute(identifier: .large, height: 600),
     ]
     var issueReporterMock: any IssueReportingProtocol = IssueReporterMock()
     let _ = UCSheetView.Configuration(detents: noDefaultDetent, issueReporter: &issueReporterMock)
@@ -87,16 +87,19 @@ final class UCSheetConfigurationTests: XCTestCase {
     let identicalDetentIdentifiers: [SheetDetent] = [
       .absolute(identifier: .small, height: 200),
       .absolute(identifier: .small, height: 400),
-      .absolute(identifier: .large, height: 600)
+      .absolute(identifier: .large, height: 600),
     ]
     var issueReporterMock: any IssueReportingProtocol = IssueReporterMock()
     let _ = UCSheetView.Configuration(detents: identicalDetentIdentifiers, issueReporter: &issueReporterMock)
-    
+
     guard let issueReporterMock = issueReporterMock as? IssueReporterMock else {
       XCTFail(failedCastToIssueReporterMockMessage)
       return
     }
-    let expectedWarnings = Set<String>([AlertMessages.identicalDetentIdentifiersWarning, AlertMessages.invalidDefaultDetentWarning])
+    let expectedWarnings = Set<String>([
+      AlertMessages.identicalDetentIdentifiersWarning,
+      AlertMessages.invalidDefaultDetentWarning,
+    ])
     XCTAssertEqual(issueReporterMock.reportedIssues, expectedWarnings)
   }
 
@@ -104,7 +107,7 @@ final class UCSheetConfigurationTests: XCTestCase {
     let multipleDefaultDetents: [SheetDetent] = [
       .absolute(identifier: .default, height: 200),
       .absolute(identifier: .default, height: 400),
-      .absolute(identifier: .large, height: 600)
+      .absolute(identifier: .large, height: 600),
     ]
     var issueReporterMock: any IssueReportingProtocol = IssueReporterMock()
     let _ = UCSheetView.Configuration(detents: multipleDefaultDetents, issueReporter: &issueReporterMock)

@@ -21,23 +21,29 @@ final class SheetHeightModifierModel {
 
   func update(translation: CGFloat, velocity: CGFloat, state: SheetHeightModifier.State) -> SheetHeightModifier {
     sheetHeightModifier.direction = velocity > 0 ? .down : .up
-    
+
     let translation = translation * -1
     let translationDelta = translation - previousTranslation
     previousTranslation = translation
     let modifier = getTranslationDeltaModifier(translationDelta: translationDelta)
-    
+
     sheetHeight += translationDelta * modifier
     sheetHeightModifier.updatedHeight = sheetHeight
     sheetHeightModifier.velocity = min(abs(velocity / 100), 10)
     sheetHeightModifier.state = state
-    
-    if sheetHeight > sheetDetentsModel.maxDetent.height + maxPanBeyondDetentBounds || sheetHeight < sheetDetentsModel.minDetent.height - maxPanBeyondDetentBounds {
+
+    if
+      sheetHeight > sheetDetentsModel.maxDetent.height + maxPanBeyondDetentBounds || sheetHeight < sheetDetentsModel.minDetent
+        .height - maxPanBeyondDetentBounds
+    {
       sheetHeightModifier.state = .finished
     }
 
     if sheetHeightModifier.state == .finished {
-      let updatedDetent = sheetDetentsModel.getDetent(forHeight: sheetHeightModifier.updatedHeight, inDirection: sheetHeightModifier.direction)
+      let updatedDetent = sheetDetentsModel.getDetent(
+        forHeight: sheetHeightModifier.updatedHeight,
+        inDirection: sheetHeightModifier.direction
+      )
       sheetHeightModifier.animate = true
       sheetHeightModifier.updatedHeight = sheetDetentsModel.getDetentHeight(forDetent: updatedDetent)
     }

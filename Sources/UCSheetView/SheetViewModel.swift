@@ -82,13 +82,13 @@ final class SheetViewModel {
         let dimmingHeights = sheetDetentsModel.dimmingHeights,
         sheetHeight > dimmingHeights.largestUndimmedHeight
       else { return 0 }
-    
+
       let largestUndimmedHeight = dimmingHeights.largestUndimmedHeight
       let smallestDimmedHeight = dimmingHeights.smallestDimmedHeight
       let percentageDimmed = (sheetHeight - largestUndimmedHeight) / (smallestDimmedHeight - largestUndimmedHeight)
       let maxDimmingAlpha = sheetConfiguration.maxDimmingAlpha
       return min(percentageDimmed * maxDimmingAlpha, maxDimmingAlpha)
     }.assign(to: \.value, on: dimmingAlpha)
-    .store(in: &subscriptions)
+      .store(in: &subscriptions)
   }
 }

@@ -5,22 +5,18 @@
 //  Created by John Heberle on 10/11/24.
 //
 
-import XCTest
 import Combine
+import XCTest
 
 class CurrentValueSubjectSpy<T: Equatable> {
-  let expectation: XCTestExpectation
-  
-  private var expectdValues: [T]
-  private var expectationIndex = 0
-  
-  private var subscriptions = Set<AnyCancellable>()
-  
+
+  // MARK: Lifecycle
+
   @discardableResult
   init(_ subject: CurrentValueSubject<T, Never>, _ expectedValues: [T]) {
-    self.expectation = XCTestExpectation(description: "ValueSpy \(String(describing: T.self)) expectation")
-    self.expectdValues = expectedValues
-    
+    expectation = XCTestExpectation(description: "ValueSpy \(String(describing: T.self)) expectation")
+    expectdValues = expectedValues
+
     subject.dropFirst().sink { [weak self] value in
       guard let self else { return }
       XCTAssertEqual(value, expectdValues[expectationIndex])
@@ -30,4 +26,16 @@ class CurrentValueSubjectSpy<T: Equatable> {
       }
     }.store(in: &subscriptions)
   }
+
+  // MARK: Internal
+
+  let expectation: XCTestExpectation
+
+  // MARK: Private
+
+  private var expectdValues: [T]
+  private var expectationIndex = 0
+
+  private var subscriptions = Set<AnyCancellable>()
+
 }

@@ -30,12 +30,12 @@ struct SheetDetentsModel {
       }
     }
     resolvedDetentsInit.sort()
-    
-    if defaultDetentInit == nil  {
+
+    if defaultDetentInit == nil {
       resolvedDetentsInit[0] = ResolvedDetent(height: resolvedDetentsInit.first!.height, identifier: .default)
       defaultDetentInit = resolvedDetentsInit.first!
     }
-    
+
     resolvedDetents = resolvedDetentsInit
     selectedDetent = defaultDetentInit!.identifier
     minDetent = resolvedDetents.first!
@@ -65,7 +65,7 @@ struct SheetDetentsModel {
 
   // MARK: Internal
 
-  internal struct ResolvedDetent: Comparable, Equatable {
+  struct ResolvedDetent: Comparable, Equatable {
     let height: CGFloat
     let identifier: SheetDetent.Identifier
 
@@ -73,12 +73,12 @@ struct SheetDetentsModel {
       lhs.height < rhs.height
     }
   }
-  
-  internal struct DimmingHeights: Equatable {
+
+  struct DimmingHeights: Equatable {
     let largestUndimmedHeight: CGFloat
     let smallestDimmedHeight: CGFloat
   }
-  
+
   var selectedDetent: SheetDetent.Identifier
   let minDetent: ResolvedDetent
   let maxDetent: ResolvedDetent
@@ -89,7 +89,7 @@ struct SheetDetentsModel {
     if isHeightInDetentBounds(height: height, detent: selectedDetent) {
       return selectedDetent.identifier
     }
-    
+
     switch direction {
     case .up:
       for detent in resolvedDetents {
@@ -98,6 +98,7 @@ struct SheetDetentsModel {
         }
       }
       return maxDetent.identifier
+
     case .down:
       for detent in resolvedDetents.reversed() {
         if isHeightInDetentBounds(height: height, detent: detent) || height > detent.height {
