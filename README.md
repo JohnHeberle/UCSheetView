@@ -17,12 +17,7 @@ UCSheetView aims to resolve this by providing a configurable UIView subclass tha
 
 
 ### ToDos
-- Add Tests
-  - SheetDetentsModel
-  - SheetHeightModifierModel
-  - SheetViewModel
-  - UCSheetView
 - Add Features
   - Make configuration to sheet expand from top instead of bottom
   - Make configuration to dismiss the sheet
-  - Make configuration to allow detent heights to be setrelative to safe area
+  - Make configuration to allow detent heights to be set relative to safe area
