@@ -1,4 +1,4 @@
-# UnifiedComponents - SheetView (Work in Progress)
+# UnifiedComponents - SheetView
 
 ### UnifiedComponents
 UnifiedComponents aims to isolate code I have found helpful in personal projects and make it publicly available.
