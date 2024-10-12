@@ -1,6 +1,6 @@
 //
 //  SheetHeightModifierTests.swift
-//  UCSheetViewTests
+//  UCSheetView
 //
 //  Created by John Heberle on 10/9/24.
 //
@@ -9,15 +9,15 @@ import XCTest
 @testable import UCSheetView
 
 final class SheetHeightModifierTests: XCTestCase {
-  func testDefaultInit() {
+  func testSheetHeightModifier_DefaultInit() {
     let sheetHeightModifier = SheetHeightModifier(updatedHeight: 100)
     XCTAssertEqual(sheetHeightModifier.updatedHeight, 100)
     XCTAssertEqual(sheetHeightModifier.velocity, 0)
-    XCTAssertTrue(sheetHeightModifier.animate)
+    XCTAssertFalse(sheetHeightModifier.animate)
     XCTAssertEqual(sheetHeightModifier.state, .started)
   }
   
-  func testInit() {
+  func testSheetHeightModifier_Init() {
     let sheetHeightModifier = SheetHeightModifier(updatedHeight: 50, velocity: 5, animate: false, state: .continued)
     XCTAssertEqual(sheetHeightModifier.updatedHeight, 50)
     XCTAssertEqual(sheetHeightModifier.velocity, 5)
@@ -25,7 +25,7 @@ final class SheetHeightModifierTests: XCTestCase {
     XCTAssertEqual(sheetHeightModifier.state, .continued)
   }
   
-  func testGetStateFromPanGuestureRecognizer() {
+  func testSheetHeightModifier_GetStateFromPanGuestureRecognizer() {
     let stateMapping: [(UIPanGestureRecognizer.State, SheetHeightModifier.State?)] = [
       (.began, .started),
       (.changed, .continued),

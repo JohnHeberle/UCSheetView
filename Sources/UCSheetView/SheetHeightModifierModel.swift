@@ -14,15 +14,14 @@ final class SheetHeightModifierModel {
   init(sheetDetentsModel: SheetDetentsModel, initialSheetHeight: CGFloat) {
     self.sheetDetentsModel = sheetDetentsModel
     sheetHeight = initialSheetHeight
-
     sheetHeightModifier = SheetHeightModifier(updatedHeight: initialSheetHeight)
-    minDetentHeight = sheetDetentsModel.minDetent.height
-    maxDetentHeight = sheetDetentsModel.maxDetent.height
   }
 
   // MARK: Internal
 
   func update(translation: CGFloat, velocity: CGFloat, state: SheetHeightModifier.State) -> SheetHeightModifier {
+    sheetHeightModifier.direction = velocity > 0 ? .down : .up
+    
     let translation = translation * -1
     let translationDelta = translation - previousTranslation
     previousTranslation = translation
@@ -33,12 +32,13 @@ final class SheetHeightModifierModel {
     sheetHeightModifier.velocity = min(abs(velocity / 100), 10)
     sheetHeightModifier.state = state
     
-    if sheetHeight > maxDetentHeight + maxPanBeyondDetentBounds || sheetHeight < minDetentHeight - maxPanBeyondDetentBounds {
+    if sheetHeight > sheetDetentsModel.maxDetent.height + maxPanBeyondDetentBounds || sheetHeight < sheetDetentsModel.minDetent.height - maxPanBeyondDetentBounds {
       sheetHeightModifier.state = .finished
     }
 
     if sheetHeightModifier.state == .finished {
-      let updatedDetent = sheetDetentsModel.getDetent(forHeight: sheetHeightModifier.updatedHeight)
+      let updatedDetent = sheetDetentsModel.getDetent(forHeight: sheetHeightModifier.updatedHeight, inDirection: sheetHeightModifier.direction)
+      sheetHeightModifier.animate = true
       sheetHeightModifier.updatedHeight = sheetDetentsModel.getDetentHeight(forDetent: updatedDetent)
     }
 
@@ -53,24 +53,20 @@ final class SheetHeightModifierModel {
 
   private let sheetDetentsModel: SheetDetentsModel
   private var sheetHeightModifier: SheetHeightModifier
-
   private var sheetHeight: CGFloat
-  private let minDetentHeight: CGFloat
-  private let maxDetentHeight: CGFloat
 
   private func getTranslationDeltaModifier(translationDelta: CGFloat) -> CGFloat {
     let translatedSheetHeight = sheetHeight + translationDelta
 
     var modifier: CGFloat = 1
-    if translatedSheetHeight < minDetentHeight {
-      let beyondDetentOffset = abs(translatedSheetHeight - minDetentHeight)
+    if translatedSheetHeight < sheetDetentsModel.minDetent.height {
+      let beyondDetentOffset = abs(translatedSheetHeight - sheetDetentsModel.minDetent.height)
       modifier = min(1, (maxPanBeyondDetentBounds / beyondDetentPanDecaySensitivity) / beyondDetentOffset)
-    } else if translatedSheetHeight > maxDetentHeight {
-      let beyondDetentOffset = abs(translatedSheetHeight - maxDetentHeight)
+    } else if translatedSheetHeight > sheetDetentsModel.maxDetent.height {
+      let beyondDetentOffset = abs(translatedSheetHeight - sheetDetentsModel.maxDetent.height)
       modifier = min(1, (maxPanBeyondDetentBounds / beyondDetentPanDecaySensitivity) / beyondDetentOffset)
     }
 
     return modifier
   }
-
 }

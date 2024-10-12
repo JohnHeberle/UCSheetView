@@ -8,7 +8,6 @@
 import Combine
 import UIKit
 
-
 public final class UCSheetView: UIView {
 
   // MARK: Lifecycle
@@ -43,11 +42,11 @@ public final class UCSheetView: UIView {
 
   // MARK: Private
 
-  private let viewModel: SheetViewModel
+  let viewModel: SheetViewModel
   private let sheetConfiguration: Configuration
   private var subscriptions = Set<AnyCancellable>()
   
-  private lazy var sheetHeightAnchor = sheetBackgroundView.heightAnchor.constraint(equalToConstant: 0).withPriority(.requiredMinusOne)
+  lazy var sheetHeightAnchor = sheetBackgroundView.heightAnchor.constraint(equalToConstant: 0).withPriority(.required, offset: -1)
   
   private var dimmableBackgroundView: UIView = {
     var dimmableBackgroundView = UIView()
@@ -56,6 +55,12 @@ public final class UCSheetView: UIView {
     dimmableBackgroundView.alpha = 0
     dimmableBackgroundView.isUserInteractionEnabled = false
     return dimmableBackgroundView
+  }()
+  
+  private lazy var sheetBackgroundView: SheetBackgroundView = {
+    let sheetBackgroundView = SheetBackgroundView(sheetConfiguration: sheetConfiguration)
+    sheetBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+    return sheetBackgroundView
   }()
 
   private lazy var grabberView: UIView = {
@@ -74,12 +79,6 @@ public final class UCSheetView: UIView {
     return grabberView
   }()
 
-  private lazy var sheetBackgroundView: SheetBackgroundView = {
-    let sheetBackgroundView = SheetBackgroundView(sheetConfiguration: sheetConfiguration)
-    sheetBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-    return sheetBackgroundView
-  }()
-
   private func setUpViews(with contentView: UIView) {
     for view in [dimmableBackgroundView, sheetBackgroundView] { addSubview(view) }
     NSLayoutConstraint.attatchAnchors(of: dimmableBackgroundView, to: self)
@@ -87,13 +86,14 @@ public final class UCSheetView: UIView {
     NSLayoutConstraint.activate([sheetHeightAnchor])
     
     contentView.translatesAutoresizingMaskIntoConstraints = false
-    for view in [grabberView, contentView] { sheetBackgroundView.addSubview(view) }
+    for view in [grabberView, contentView] { sheetBackgroundView.contentView.addSubview(view) }
     NSLayoutConstraint.activate([
-      grabberView.topAnchor.constraint(equalTo: sheetBackgroundView.topAnchor, constant: 5),
-      grabberView.centerXAnchor.constraint(equalTo: sheetBackgroundView.centerXAnchor),
-      contentView.topAnchor.constraint(equalTo: grabberView.bottomAnchor, constant: 12),
+      grabberView.topAnchor.constraint(equalTo: sheetBackgroundView.contentView.topAnchor, constant: 5).withPriority(.required, offset: -1),
+      grabberView.centerXAnchor.constraint(equalTo: sheetBackgroundView.contentView.centerXAnchor).withPriority(.required, offset: -1),
+      contentView.topAnchor.constraint(equalTo: grabberView.bottomAnchor, constant: 12).withPriority(.required, offset: -1),
+      contentView.bottomAnchor.constraint(equalTo: sheetBackgroundView.contentView.bottomAnchor).withPriority(.required, offset: -2),
     ])
-    NSLayoutConstraint.attatchAnchors(of: contentView, to: sheetBackgroundView, for: [.leading, .trailing, .bottom])
+    NSLayoutConstraint.attatchAnchors(of: contentView, to: sheetBackgroundView.contentView, for: [.leading, .trailing])
   }
 
   private func setUpGestureRecognizers() {
@@ -141,8 +141,7 @@ public final class UCSheetView: UIView {
     }.store(in: &subscriptions)
   }
 
-  @objc
-  private func handleSheetPan(_ panGesture: UIPanGestureRecognizer) {
+  @objc private func handleSheetPan(_ panGesture: UIPanGestureRecognizer) {
     guard let state = SheetHeightModifier.getState(forPanGestureState: panGesture.state) else { return }
     let translation = panGesture.translation(in: self).y
     let velocity = panGesture.velocity(in: self).y
@@ -151,9 +150,7 @@ public final class UCSheetView: UIView {
     })
   }
 
-  @objc
-  private func handleDimmedViewTap(_: UITapGestureRecognizer) {
+  @objc private func handleDimmedViewTap(_: UITapGestureRecognizer) {
     viewModel.setToDefaultDetent()
   }
-
 }

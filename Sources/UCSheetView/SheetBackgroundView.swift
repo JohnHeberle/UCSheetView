@@ -26,6 +26,9 @@ final class SheetBackgroundView: UIView {
     layer.shadowColor = sheetConfiguration.shadowColor
     layer.shadowOpacity = sheetConfiguration.shadowOpacity
     layer.shadowRadius = sheetConfiguration.shadowRadius
+    
+    addSubview(contentView)
+    NSLayoutConstraint.attatchAnchors(of: contentView, to: self)
   }
 
   // MARK: Internal
@@ -37,4 +40,10 @@ final class SheetBackgroundView: UIView {
     sheetHeight?.send(frame.height)
   }
 
+  lazy var contentView: UIView = {
+    let contentView = UIView()
+    contentView.translatesAutoresizingMaskIntoConstraints = false
+    contentView.clipsToBounds = true
+    return contentView
+  }()
 }

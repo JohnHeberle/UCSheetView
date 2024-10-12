@@ -55,8 +55,8 @@ extension NSLayoutConstraint {
     }
   }
 
-  func withPriority(_ priority: UILayoutPriority) -> NSLayoutConstraint {
-    self.priority = priority
+  func withPriority(_ priority: UILayoutPriority, offset: Float = 0) -> NSLayoutConstraint {
+    self.priority = UILayoutPriority(rawValue: priority.rawValue + offset)
     return self
   }
 }

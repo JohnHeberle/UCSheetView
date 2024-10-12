@@ -1,6 +1,6 @@
 //
 //  SheetDetentTests.swift
-//  UCSheetViewTests
+//  UCSheetView
 //
 //  Created by John Heberle on 10/9/24.
 //
@@ -11,7 +11,7 @@ import XCTest
 final class SheetDetentTests: XCTestCase {
   let sheetDetentIdentifiers: [SheetDetent.Identifier] = [.default, .xSmall, .small, .medium, .large, .xLarge]
   
-  func testFractionalInit() {
+  func testSheetDetent_FractionalInit() {
     for identifier in sheetDetentIdentifiers {
       let sheetDetent: SheetDetent = .fractional(identifier: identifier, divisor: 20)
       XCTAssertEqual(sheetDetent.identifier, identifier)
@@ -19,7 +19,7 @@ final class SheetDetentTests: XCTestCase {
     }
   }
   
-  func testFractionalInvalidInit() {
+  func testSheetDetent_FractionalInvalidInit() {
     for identifier in sheetDetentIdentifiers {
       let sheetDetent: SheetDetent = .fractional(identifier: identifier, divisor: 0)
       XCTAssertEqual(sheetDetent.identifier, identifier)
@@ -33,7 +33,7 @@ final class SheetDetentTests: XCTestCase {
     }
   }
   
-  func testAbsoluteInit() {
+  func testSheetDetent_AbsoluteInit() {
     for identifier in sheetDetentIdentifiers {
       let sheetDetent: SheetDetent = .absolute(identifier: identifier, height: 50)
       XCTAssertEqual(sheetDetent.identifier, identifier)
@@ -47,7 +47,7 @@ final class SheetDetentTests: XCTestCase {
     }
   }
   
-  func testEquality() {
+  func testSheetDetent_Equality() {
     var detents: [(SheetDetent, SheetDetent)] = [
       (.absolute(identifier: .default, height: 100), .absolute(identifier: .default, height: 100)),
       (.absolute(identifier: .xSmall, height: 100), .absolute(identifier: .xSmall, height: 50)),

@@ -26,13 +26,11 @@ final class SheetViewModel {
   var sheetHeightModifier = CurrentValueSubject<SheetHeightModifier?, Never>(nil)
   var dimmingAlpha = CurrentValueSubject<CGFloat, Never>(0)
 
-  func updateSheetPan(translation: CGFloat, velocity: CGFloat, state: SheetHeightModifier.State, cancelPan: () -> Void) {
-    if sheetHeightModifierModel == nil {
-      sheetHeightModifierModel = SheetHeightModifierModel(
-        sheetDetentsModel: sheetDetentsModel,
-        initialSheetHeight: sheetHeight.value
-      )
-    }
+  func updateSheetPan(translation: CGFloat, velocity: CGFloat, state: SheetHeightModifier.State, cancelPan: (() -> Void)? = nil) {
+    sheetHeightModifierModel = sheetHeightModifierModel ?? SheetHeightModifierModel(
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: sheetHeight.value
+    )
 
     guard let sheetHeightModifierModel else { return }
 
@@ -43,8 +41,11 @@ final class SheetViewModel {
     )
 
     if updatedSheetHeightModifierModel.state == .finished {
-      sheetDetentsModel.selectedDetent = sheetDetentsModel.getDetent(forHeight: updatedSheetHeightModifierModel.updatedHeight)
-      cancelPan()
+      sheetDetentsModel.selectedDetent = sheetDetentsModel.getDetent(
+        forHeight: updatedSheetHeightModifierModel.updatedHeight,
+        inDirection: updatedSheetHeightModifierModel.direction
+      )
+      cancelPan?()
       self.sheetHeightModifierModel = nil
     }
 
@@ -75,19 +76,19 @@ final class SheetViewModel {
   }
 
   private func initializeDimmingAlpha() {
-    sheetHeight
-      .removeDuplicates()
-      .compactMap { [weak self] sheetHeight in
-        guard
-          let self,
-          let (largestUndimmedHeight, smallestDimmedHeight) = sheetDetentsModel.dimmingDetentHeights,
-          sheetHeight > largestUndimmedHeight
-        else { return 0 }
-        let percentageHeightChange = (sheetHeight - largestUndimmedHeight) / (smallestDimmedHeight - largestUndimmedHeight)
-        let maxDimmingAlpha = sheetConfiguration.maxDimmingAlpha
-        return min(percentageHeightChange * maxDimmingAlpha, maxDimmingAlpha)
-      }.assign(to: \.value, on: dimmingAlpha)
-      .store(in: &subscriptions)
+    sheetHeight.compactMap { [weak self] sheetHeight in
+      guard
+        let self,
+        let dimmingHeights = sheetDetentsModel.dimmingHeights,
+        sheetHeight > dimmingHeights.largestUndimmedHeight
+      else { return 0 }
+    
+      let largestUndimmedHeight = dimmingHeights.largestUndimmedHeight
+      let smallestDimmedHeight = dimmingHeights.smallestDimmedHeight
+      let percentageDimmed = (sheetHeight - largestUndimmedHeight) / (smallestDimmedHeight - largestUndimmedHeight)
+      let maxDimmingAlpha = sheetConfiguration.maxDimmingAlpha
+      return min(percentageDimmed * maxDimmingAlpha, maxDimmingAlpha)
+    }.assign(to: \.value, on: dimmingAlpha)
+    .store(in: &subscriptions)
   }
-
 }

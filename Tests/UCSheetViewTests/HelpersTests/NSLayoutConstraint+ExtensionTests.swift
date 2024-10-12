@@ -1,6 +1,6 @@
 //
 //  NSLayoutConstraintExtensionTests.swift
-//  UCSheetViewTests
+//  UCSheetView
 //
 //  Created by John Heberle on 10/9/24.
 //
@@ -18,67 +18,61 @@ class NSLayoutConstraintExtensionTests: XCTestCase {
     parentView.addSubview(childView)
   }
 
-  @MainActor override func tearDown() async throws {
-    parentView = nil
-    childView = nil
-  }
-
-  @MainActor func testConstraintWithPriority() {
+  @MainActor func testNSLayoutConstraintExtension_ConstraintWithPriority() {
     var constraint = childView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor)
     XCTAssertEqual(constraint.priority, .required)
     constraint = constraint.withPriority(.defaultHigh)
     XCTAssertEqual(constraint.priority, .defaultHigh)
   }
 
-  @MainActor func testAttachDefaultAnchors() {
+  @MainActor func testNSLayoutConstraintExtension_AttachDefaultAnchors() {
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView)
     processAnchors(withExpectedAnchors: [.leading, .top, .trailing, .bottom])
   }
   
-  @MainActor func testAttachSingleAnchor() {
+  @MainActor func testNSLayoutConstraintExtension_AttachSingleAnchor() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachMultipleAnchor() {
+  @MainActor func testNSLayoutConstraintExtension_AttachMultipleAnchor() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading, .trailing]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachSingleAnchorWithConstant() {
+  @MainActor func testNSLayoutConstraintExtension_AttachSingleAnchorWithConstant() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading(constant: 20)]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachMultipleAnchorsWithConstant() {
+  @MainActor func testNSLayoutConstraintExtension_AttachMultipleAnchorsWithConstant() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading(constant: 20), .trailing(constant: 20)]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
-
   
-  @MainActor func testAttachSingleAnchorWithSafeArea() {
+  @MainActor func testNSLayoutConstraintExtension_AttachSingleAnchorWithSafeArea() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading(toSafeArea: true)]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachMultipleAnchorsWithSafeArea() {
+  @MainActor func testNSLayoutConstraintExtension_AttachMultipleAnchorsWithSafeArea() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading(toSafeArea: true), .trailing(toSafeArea: true)]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachSingleAnchorWithMultipleModifiers() {
+  @MainActor func testNSLayoutConstraintExtension_AttachSingleAnchorWithMultipleModifiers() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading(toSafeArea: true, constant: 20)]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachMultipleAnchorsWithMultipleModifiers() {
+  @MainActor func testNSLayoutConstraintExtension_AttachMultipleAnchorsWithMultipleModifiers() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [
       .leading(toSafeArea: true, constant: 20),
       .top(toSafeArea: true, constant: 20),
@@ -89,25 +83,25 @@ class NSLayoutConstraintExtensionTests: XCTestCase {
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testEmptyAnchors() {
+  @MainActor func testNSLayoutConstraintExtension_EmptyAnchors() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = []
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachIdenticalAnchors() {
+  @MainActor func testNSLayoutConstraintExtension_AttachIdenticalAnchors() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading, .leading]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func testAttachIdenticalAnchorsWithMultipleModifiers() {
+  @MainActor func testNSLayoutConstraintExtension_AttachIdenticalAnchorsWithMultipleModifiers() {
     let expectedAnchors: [NSLayoutConstraint.Anchor] = [.leading(toSafeArea: false, constant: 20), .leading(toSafeArea: true, constant: 20)]
     NSLayoutConstraint.attatchAnchors(of: childView, to: parentView, for: expectedAnchors)
     processAnchors(withExpectedAnchors: expectedAnchors)
   }
   
-  @MainActor func processAnchors(withExpectedAnchors expectedAnchors: [NSLayoutConstraint.Anchor]) {
+  @MainActor private func processAnchors(withExpectedAnchors expectedAnchors: [NSLayoutConstraint.Anchor]) {
     let expectedAnchorsContainsToSafeArea = expectedAnchors.reduce(false, { $0 || $1.toSafeArea })
     XCTAssertEqual(parentView.constraints.count, expectedAnchors.count + (expectedAnchorsContainsToSafeArea ? 4 : 0))
     
@@ -160,15 +154,6 @@ class NSLayoutConstraintExtensionTests: XCTestCase {
     XCTAssertEqual(anchors.count, 0)
   }
   
-  private func attribute(forAnchor anchor: NSLayoutConstraint.Anchor) -> NSLayoutConstraint.Attribute {
-    switch anchor {
-    case .leading: return .leading
-    case .top: return .top
-    case .trailing: return .trailing
-    case .bottom: return .bottom
-    }
-  }
-  
   @MainActor private func getAnchorIndex(
     forConstraint constraint: NSLayoutConstraint,
     inAnchors anchors: [NSLayoutConstraint.Anchor],
@@ -181,5 +166,14 @@ class NSLayoutConstraintExtensionTests: XCTestCase {
       let isConstraintSecondItemValidForAnchor = attribute(forAnchor: anchor) == constraint.firstAttribute
       return isConstraintFirstItemValidForAnchor && isConstraintSecondItemValidForAnchor && anchor.constant == constraint.constant
     })
+  }
+  
+  private func attribute(forAnchor anchor: NSLayoutConstraint.Anchor) -> NSLayoutConstraint.Attribute {
+    switch anchor {
+    case .leading: return .leading
+    case .top: return .top
+    case .trailing: return .trailing
+    case .bottom: return .bottom
+    }
   }
 }

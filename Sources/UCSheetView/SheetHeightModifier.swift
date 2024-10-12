@@ -7,15 +7,16 @@
 
 import UIKit
 
-struct SheetHeightModifier {
+struct SheetHeightModifier: Equatable {
 
   // MARK: Lifecycle
 
-  init(updatedHeight: CGFloat, velocity: CGFloat = 0, animate: Bool = true, state: State = .started) {
+  init(updatedHeight: CGFloat, velocity: CGFloat = 0, animate: Bool = false, state: State = .started, direction: Direction = .up) {
     self.updatedHeight = updatedHeight
     self.velocity = velocity
     self.animate = animate
     self.state = state
+    self.direction = direction
   }
 
   // MARK: Internal
@@ -23,11 +24,16 @@ struct SheetHeightModifier {
   enum State {
     case started, finished, continued
   }
+  
+  enum Direction {
+    case down, up
+  }
 
   var updatedHeight: CGFloat
   var velocity: CGFloat
   var animate: Bool
   var state: State
+  var direction: Direction
 
   static func getState(forPanGestureState panGestureState: UIPanGestureRecognizer.State) -> State? {
     switch panGestureState {
@@ -41,5 +47,4 @@ struct SheetHeightModifier {
       nil
     }
   }
-
 }

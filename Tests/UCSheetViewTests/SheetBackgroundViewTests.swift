@@ -1,6 +1,6 @@
 //
 //  SheetBackgroundViewTests.swift
-//  UCSheetViewTests
+//  UCSheetView
 //
 //  Created by John Heberle on 10/9/24.
 //
@@ -19,7 +19,7 @@ final class SheetBackgroundViewTests: XCTestCase {
     shadowRadius: 12
   )
   
-  @MainActor func testSheetBackgroundInit() {
+  @MainActor func testSheetBackgroundView_Init() {
     let sheetBackground = SheetBackgroundView(sheetConfiguration: sheetConfiguration)
     
     XCTAssertEqual(sheetBackground.backgroundColor, sheetConfiguration.backgroundColor)
@@ -29,15 +29,16 @@ final class SheetBackgroundViewTests: XCTestCase {
     XCTAssertEqual(sheetBackground.layer.shadowRadius, sheetConfiguration.shadowRadius)
   }
   
-  @MainActor func testSheetBackGroundUpdatesSheetHeight() {
+  @MainActor func testSheetBackgroundView_UpdateSheetHeight() {
     let sheetBackground = SheetBackgroundView(sheetConfiguration: sheetConfiguration)
     let sheetHeight = CurrentValueSubject<CGFloat, Never>(0)
-    sheetBackground.sheetHeight = sheetHeight
-    
     let expectedSheetHeight: CGFloat = 300
-    sheetBackground.frame = CGRect(x: 0, y: 0, width: 100, height: expectedSheetHeight)
-    sheetBackground.layoutSubviews()
     
+    sheetBackground.sheetHeight = sheetHeight
+    sheetBackground.frame = CGRect(x: 0, y: 0, width: 100, height: expectedSheetHeight)
+    
+    XCTAssertEqual(sheetHeight.value, 0)
+    sheetBackground.layoutSubviews()
     XCTAssertEqual(sheetHeight.value, expectedSheetHeight)
   }
 }

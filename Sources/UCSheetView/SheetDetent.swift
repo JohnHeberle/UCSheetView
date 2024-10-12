@@ -41,5 +41,4 @@ public struct SheetDetent: Equatable {
   public static func == (lhs: SheetDetent, rhs: SheetDetent) -> Bool {
     lhs.identifier == rhs.identifier
   }
-
 }
