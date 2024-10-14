@@ -36,7 +36,6 @@ extension NSLayoutConstraint {
         constant
       }
     }
-
   }
 
   static func attatchAnchors(of child: UIView, to parent: UIView, for anchors: [Anchor] = Anchor.bounds) {

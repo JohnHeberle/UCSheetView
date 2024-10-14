@@ -62,4 +62,16 @@ final class SheetDetentTests: XCTestCase {
     ]
     for detent in detents { XCTAssertNotEqual(detent.0, detent.1) }
   }
+
+  func testSheetDetent_ResolvedIdentifier() {
+    let identifiers: [(SheetDetent.Identifier, ResolvedDetent.Identifier)] = [
+      (.default, .userDefined(identifier: .default)),
+      (.xSmall, .userDefined(identifier: .xSmall)),
+      (.small, .userDefined(identifier: .small)),
+      (.medium, .userDefined(identifier: .medium)),
+      (.large, .userDefined(identifier: .large)),
+      (.xLarge, .userDefined(identifier: .xLarge)),
+    ]
+    for identifier in identifiers { XCTAssertEqual(identifier.0.resolved(), identifier.1) }
+  }
 }

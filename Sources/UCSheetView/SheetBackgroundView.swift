@@ -48,5 +48,4 @@ final class SheetBackgroundView: UIView {
     super.layoutSubviews()
     sheetHeight?.send(frame.height)
   }
-
 }

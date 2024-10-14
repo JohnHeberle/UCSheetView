@@ -12,14 +12,15 @@ final class SheetHeightModifierModelTests: XCTestCase {
 
   // MARK: Internal
 
+  let defaultDetents: [SheetDetent] = [.absolute(identifier: .default, height: 100), .fractional(identifier: .medium, divisor: 2)]
+
   var sheetDetentsModel: SheetDetentsModel!
   var sheetHeightModifierModel: SheetHeightModifierModel!
   var sheetConfiguration: UCSheetView.Configuration!
 
   override func setUp() {
     super.setUp()
-    let detents: [SheetDetent] = [.absolute(identifier: .default, height: 100), .fractional(identifier: .medium, divisor: 2)]
-    sheetConfiguration = UCSheetView.Configuration(detents: detents)
+    sheetConfiguration = UCSheetView.Configuration(detents: defaultDetents)
     sheetDetentsModel = SheetDetentsModel(containerHeight: 1000, sheetConfiguration: sheetConfiguration)
   }
 
@@ -66,6 +67,34 @@ final class SheetHeightModifierModelTests: XCTestCase {
     processPanTest(
       panValues: PanRecords.reversedMidPan.panValues,
       expectedValues: PanRecords.reversedMidPan.expectedSheetHeightModifierFromModifierModel
+    )
+  }
+
+  func testSheetHeightModifierModel_Update_TopDismissedPan() {
+    let sheetConfiguration = UCSheetView.Configuration(detents: defaultDetents, origin: .top, isDismissable: true)
+    let sheetDetentsModel = SheetDetentsModel(containerHeight: 1000, sheetConfiguration: sheetConfiguration)
+    sheetHeightModifierModel = SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: 100
+    )
+    processPanTest(
+      panValues: PanRecords.topDismissedPan.panValues,
+      expectedValues: PanRecords.topDismissedPan.expectedSheetHeightModifierFromModifierModel
+    )
+  }
+
+  func testSheetHeightModifierModel_Update_TopDefaultPan() {
+    let sheetConfiguration = UCSheetView.Configuration(detents: defaultDetents, origin: .top)
+    let sheetDetentsModel = SheetDetentsModel(containerHeight: 1000, sheetConfiguration: sheetConfiguration)
+    sheetHeightModifierModel = SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: 100
+    )
+    processPanTest(
+      panValues: PanRecords.topDefaultPan.panValues,
+      expectedValues: PanRecords.topDefaultPan.expectedSheetHeightModifierFromModifierModel
     )
   }
 

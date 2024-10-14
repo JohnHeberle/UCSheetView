@@ -35,22 +35,22 @@ final class SheetViewModel {
 
     guard let sheetHeightModifierModel else { return }
 
-    let updatedSheetHeightModifierModel = sheetHeightModifierModel.update(
+    let updatedSheetHeightModifier = sheetHeightModifierModel.update(
       translation: translation,
       velocity: velocity,
       state: state
     )
 
-    if updatedSheetHeightModifierModel.state == .finished {
+    if updatedSheetHeightModifier.state == .finished {
       sheetDetentsModel.selectedDetent = sheetDetentsModel.getDetent(
-        forHeight: updatedSheetHeightModifierModel.updatedHeight,
-        inDirection: updatedSheetHeightModifierModel.direction
+        forHeight: updatedSheetHeightModifier.updatedHeight,
+        inDirection: updatedSheetHeightModifier.direction
       )
       cancelPan?()
       self.sheetHeightModifierModel = nil
     }
 
-    sheetHeightModifier.send(updatedSheetHeightModifierModel)
+    sheetHeightModifier.send(updatedSheetHeightModifier)
   }
 
   func setToDefaultDetent(animated: Bool = true) {

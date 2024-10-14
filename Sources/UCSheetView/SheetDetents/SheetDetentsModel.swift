@@ -15,13 +15,13 @@ struct SheetDetentsModel {
     self.sheetConfiguration = sheetConfiguration
     let detents = sheetConfiguration.detents.isEmpty || containerHeight == 0 ? defaultDetents : sheetConfiguration.detents
 
-    var defaultDetentInit: SheetDetent.ResolvedDetent?
-    var resolvedDetentsInit: [SheetDetent.ResolvedDetent] = []
-    var detentIdentifiers = Set<SheetDetent.ResolvedIdentifier>()
+    var defaultDetentInit: ResolvedDetent?
+    var resolvedDetentsInit: [ResolvedDetent] = []
+    var detentIdentifiers = Set<ResolvedDetent.Identifier>()
 
     for detent in detents {
       if !detentIdentifiers.contains(detent.identifier.resolved()) {
-        let resolvedDetent = SheetDetent.ResolvedDetent(
+        let resolvedDetent = ResolvedDetent(
           height: detent.resolver(containerHeight),
           identifier: detent.identifier.resolved()
         )
@@ -35,7 +35,7 @@ struct SheetDetentsModel {
     resolvedDetentsInit.sort()
 
     if defaultDetentInit == nil {
-      resolvedDetentsInit[0] = SheetDetent.ResolvedDetent(
+      resolvedDetentsInit[0] = ResolvedDetent(
         height: resolvedDetentsInit.first!.height,
         identifier: SheetDetent.Identifier.default.resolved()
       )
@@ -43,7 +43,7 @@ struct SheetDetentsModel {
     }
 
     if sheetConfiguration.isDismissable {
-      resolvedDetentsInit.insert(SheetDetent.ResolvedDetent(height: 0, identifier: .dismiss), at: 0)
+      resolvedDetentsInit.insert(ResolvedDetent(height: 0, identifier: .dismiss), at: 0)
     }
 
     resolvedDetents = resolvedDetentsInit
@@ -52,7 +52,7 @@ struct SheetDetentsModel {
     maxDetent = resolvedDetents.last!
 
     identifierToIndex = { [resolvedDetents] in
-      var identifierToIndex: [SheetDetent.ResolvedIdentifier: Int] = [:]
+      var identifierToIndex: [ResolvedDetent.Identifier: Int] = [:]
       for (index, detent) in resolvedDetents.enumerated() {
         identifierToIndex[detent.identifier] = index
       }
@@ -80,13 +80,16 @@ struct SheetDetentsModel {
     let smallestDimmedHeight: CGFloat
   }
 
-  var selectedDetent: SheetDetent.ResolvedIdentifier
-  let minDetent: SheetDetent.ResolvedDetent
-  let maxDetent: SheetDetent.ResolvedDetent
+  var selectedDetent: ResolvedDetent.Identifier
+  let minDetent: ResolvedDetent
+  let maxDetent: ResolvedDetent
   let dimmingHeights: DimmingHeights?
 
-  func getDetent(forHeight height: CGFloat, inDirection direction: SheetHeightModifier.Direction) -> SheetDetent
-    .ResolvedIdentifier
+  func getDetent(
+    forHeight height: CGFloat,
+    inDirection direction: SheetHeightModifier.Direction
+  )
+    -> ResolvedDetent.Identifier
   {
     let selectedDetent = resolvedDetents[identifierToIndex[selectedDetent]!]
     if isHeightInDetentBounds(height: height, detent: selectedDetent) {
@@ -112,8 +115,11 @@ struct SheetDetentsModel {
     }
   }
 
-  func getNextSmallestDetent(forHeight height: CGFloat, inDirection _: SheetHeightModifier.Direction) -> SheetDetent
-    .ResolvedIdentifier
+  func getNextSmallestDetent(
+    forHeight height: CGFloat,
+    inDirection _: SheetHeightModifier.Direction
+  )
+    -> ResolvedDetent.Identifier
   {
     for detent in resolvedDetents {
       if isHeightInDetentBounds(height: height, detent: detent) || height < detent.height {
@@ -123,8 +129,11 @@ struct SheetDetentsModel {
     return maxDetent.identifier
   }
 
-  func getNextLargestDetent(forHeight height: CGFloat, inDirection _: SheetHeightModifier.Direction) -> SheetDetent
-    .ResolvedIdentifier
+  func getNextLargestDetent(
+    forHeight height: CGFloat,
+    inDirection _: SheetHeightModifier.Direction
+  )
+    -> ResolvedDetent.Identifier
   {
     for detent in resolvedDetents.reversed() {
       if isHeightInDetentBounds(height: height, detent: detent) || height > detent.height {
@@ -134,14 +143,14 @@ struct SheetDetentsModel {
     return minDetent.identifier
   }
 
-  func getDetentHeight(forDetent identifier: SheetDetent.ResolvedIdentifier) -> CGFloat {
+  func getDetentHeight(forDetent identifier: ResolvedDetent.Identifier) -> CGFloat {
     resolvedDetents[identifierToIndex[identifier]!].height
   }
 
   // MARK: Private
 
-  private let resolvedDetents: [SheetDetent.ResolvedDetent]
-  private let identifierToIndex: [SheetDetent.ResolvedIdentifier: Int]
+  private let resolvedDetents: [ResolvedDetent]
+  private let identifierToIndex: [ResolvedDetent.Identifier: Int]
   private let sheetConfiguration: UCSheetView.Configuration
 
   private var detentBoundsOffset: CGFloat = 24
@@ -151,7 +160,7 @@ struct SheetDetentsModel {
     .fractional(identifier: .medium, divisor: 2),
   ]
 
-  private func isHeightInDetentBounds(height: CGFloat, detent: SheetDetent.ResolvedDetent) -> Bool {
+  private func isHeightInDetentBounds(height: CGFloat, detent: ResolvedDetent) -> Bool {
     height > detent.height - detentBoundsOffset && height < detent.height + detentBoundsOffset
   }
 }

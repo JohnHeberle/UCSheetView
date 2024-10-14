@@ -295,4 +295,79 @@ enum PanRecords {
       SheetHeightModifier(updatedHeight: 100.0, velocity: 6.325594382371001, animate: true, state: .finished, direction: .down),
     ]
   )
+
+  static let topDefaultPan: PanInfo = (
+    panValues: [
+      (0.0, 134.58779891392595, .started),
+      (30.5, 778.355255942102, .continued),
+      (30.5, 778.355255942102, .continued),
+      (61.0, 1385.513057960662, .continued),
+      (61.0, 1385.513057960662, .finished),
+    ],
+    expectedSheetHeightModifierFromViewModel: [
+      SheetHeightModifier(updatedHeight: 100.0, velocity: 1.3458779891392596, animate: false, state: .started, direction: .down),
+      SheetHeightModifier(updatedHeight: 130.5, velocity: 7.78355255942102, animate: false, state: .continued, direction: .down),
+      SheetHeightModifier(updatedHeight: 130.5, velocity: 7.78355255942102, animate: false, state: .continued, direction: .down),
+      SheetHeightModifier(updatedHeight: 161.0, velocity: 10.0, animate: false, state: .continued, direction: .down),
+      SheetHeightModifier(updatedHeight: 500.0, velocity: 10.0, animate: true, state: .finished, direction: .down),
+    ],
+    expectedSheetHeightModifierFromModifierModel: [
+      SheetHeightModifier(updatedHeight: 100.0, velocity: 1.3458779891392596, animate: false, state: .started, direction: .down),
+      SheetHeightModifier(updatedHeight: 130.5, velocity: 7.78355255942102, animate: false, state: .continued, direction: .down),
+      SheetHeightModifier(updatedHeight: 130.5, velocity: 7.78355255942102, animate: false, state: .continued, direction: .down),
+      SheetHeightModifier(updatedHeight: 161.0, velocity: 10.0, animate: false, state: .continued, direction: .down),
+      SheetHeightModifier(updatedHeight: 500.0, velocity: 10.0, animate: true, state: .finished, direction: .down),
+    ]
+  )
+
+  static let topDismissedPan: PanInfo = (
+    panValues: [
+      (0.0, -247.3881187251614, .started),
+      (-7.0, -284.99143515602316, .continued),
+      (-7.0, -284.99143515602316, .continued),
+      (-12.5, -408.6290896481593, .continued),
+      (-19.5, -308.6546445230455, .continued),
+      (-23.5, -293.39894538203646, .continued),
+      (-27.0, -239.20635554537955, .continued),
+      (-31.0, -202.6789744085408, .continued),
+      (-34.0, -170.19473632530907, .continued),
+      (-38.0, -196.79706716950272, .continued),
+      (-44.0, -260.36378286965845, .continued),
+      (-58.5, -387.50956771172906, .continued),
+      (-74.5, -651.8307670698124, .continued),
+      (-74.5, -651.8307670698124, .finished),
+    ],
+    expectedSheetHeightModifierFromViewModel: [
+      SheetHeightModifier(updatedHeight: 100.0, velocity: 2.473881187251614, animate: false, state: .started, direction: .up),
+      SheetHeightModifier(updatedHeight: 93.0, velocity: 2.8499143515602317, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 93.0, velocity: 2.8499143515602317, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 87.5, velocity: 4.086290896481593, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 80.5, velocity: 3.086546445230455, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 76.5, velocity: 2.933989453820365, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 73.0, velocity: 2.3920635554537957, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 69.0, velocity: 2.026789744085408, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 66.0, velocity: 1.7019473632530906, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 62.0, velocity: 1.9679706716950272, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 56.0, velocity: 2.6036378286965847, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 41.5, velocity: 3.8750956771172906, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 25.5, velocity: 6.518307670698124, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 0.0, velocity: 6.518307670698124, animate: true, state: .finished, direction: .up),
+    ],
+    expectedSheetHeightModifierFromModifierModel: [
+      SheetHeightModifier(updatedHeight: 100.0, velocity: 2.473881187251614, animate: false, state: .started, direction: .up),
+      SheetHeightModifier(updatedHeight: 93.0, velocity: 2.8499143515602317, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 93.0, velocity: 2.8499143515602317, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 87.5, velocity: 4.086290896481593, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 80.5, velocity: 3.086546445230455, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 76.5, velocity: 2.933989453820365, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 73.0, velocity: 2.3920635554537957, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 69.0, velocity: 2.026789744085408, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 66.0, velocity: 1.7019473632530906, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 62.0, velocity: 1.9679706716950272, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 56.0, velocity: 2.6036378286965847, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 41.5, velocity: 3.8750956771172906, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 25.5, velocity: 6.518307670698124, animate: false, state: .continued, direction: .up),
+      SheetHeightModifier(updatedHeight: 0.0, velocity: 6.518307670698124, animate: true, state: .finished, direction: .up),
+    ]
+  )
 }

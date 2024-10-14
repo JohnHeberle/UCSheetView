@@ -130,10 +130,32 @@ final class SheetViewModelTests: XCTestCase {
     )
   }
 
+  func testSheetViewModel_UpdateSheetPan_TopDismissed() {
+    let sheetConfiguration = UCSheetView.Configuration(detents: detents, origin: .top, isDismissable: true)
+    processPanTest(
+      panValues: PanRecords.topDismissedPan.panValues,
+      expectedValues: PanRecords.topDismissedPan.expectedSheetHeightModifierFromViewModel,
+      sheetConfiguration: sheetConfiguration
+    )
+  }
+
+  func testSheetViewModel_UpdateSheetPan_TopDefault() {
+    let sheetConfiguration = UCSheetView.Configuration(detents: detents, origin: .top)
+    processPanTest(
+      panValues: PanRecords.topDefaultPan.panValues,
+      expectedValues: PanRecords.topDefaultPan.expectedSheetHeightModifierFromViewModel,
+      sheetConfiguration: sheetConfiguration
+    )
+  }
+
   // MARK: Private
 
-  private func processPanTest(panValues: [PanValue], expectedValues: [SheetHeightModifier]) {
-    let sheetConfiguration = UCSheetView.Configuration(detents: detents)
+  private func processPanTest(
+    panValues: [PanValue],
+    expectedValues: [SheetHeightModifier],
+    sheetConfiguration: UCSheetView.Configuration? = nil
+  ) {
+    let sheetConfiguration = sheetConfiguration ?? UCSheetView.Configuration(detents: detents)
     let viewModel = SheetViewModel(sheetConfiguration: sheetConfiguration)
 
     viewModel.containerHeight.send(1000)
