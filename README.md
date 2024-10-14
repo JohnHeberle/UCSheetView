@@ -24,7 +24,9 @@ UCSheetView.Configuration:
 - (REQUIRED) detents [SheetDetent]: An array of user-specified detents. Each detent must have a distinct identifier of the following type (.default, .xSmall, .small, .medium, .large, .xLarge). A detent will be ignored if it has the same identifier as an existing detent. SheetDetent uses the height of the container to resolve detent heights at runtime. A detent with a resolved height greater than the container's height or less than the minimum sheet height will be clamped to these values, respectively. The detents are specified via the following static initializers.
   - .fractional(identifier: Identifier, divisor: CGFloat): Creates a detent at `container height / divisor`. 
   - .absolute(identifier: Identifier, height: CGFloat): Creates a detent with an absolute height of `height`. 
-  - .absolute(identifier: Identifier, offsetFromTop offset: CGFloat): Creates a detent with an absolute height of `container height - offset`.
+  - .absolute(identifier: Identifier, offsetFromMaxHeight offset: CGFloat): Creates a detent with an absolute height of `container height - offset`.
+ - origin: The location where the sheet originates, can be of the following type (.bottom, .top).
+ - isDismissable: A boolean determining whether or not the sheet is dismissable.
  - largestUnDimmedDetentIdentifier: The largest detent with no dimming. The sheet's background view begins to dim at any height greater than the resolved height of this detent.
  - maxDimmingAlpha: The maximum alpha the background view will dim to.
  - backgroundColor: The background color of the sheet.

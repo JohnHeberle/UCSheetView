@@ -14,16 +14,21 @@ final class SheetHeightModifierModelTests: XCTestCase {
 
   var sheetDetentsModel: SheetDetentsModel!
   var sheetHeightModifierModel: SheetHeightModifierModel!
+  var sheetConfiguration: UCSheetView.Configuration!
 
   override func setUp() {
     super.setUp()
     let detents: [SheetDetent] = [.absolute(identifier: .default, height: 100), .fractional(identifier: .medium, divisor: 2)]
-    let sheetConfiguration = UCSheetView.Configuration(detents: detents)
+    sheetConfiguration = UCSheetView.Configuration(detents: detents)
     sheetDetentsModel = SheetDetentsModel(containerHeight: 1000, sheetConfiguration: sheetConfiguration)
   }
 
   func testSheetHeightModifierModel_Update_DefaultPan() {
-    sheetHeightModifierModel = SheetHeightModifierModel(sheetDetentsModel: sheetDetentsModel, initialSheetHeight: 100)
+    sheetHeightModifierModel = SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: 100
+    )
     processPanTest(
       panValues: PanRecords.defaultPan.panValues,
       expectedValues: PanRecords.defaultPan.expectedSheetHeightModifierFromModifierModel
@@ -31,13 +36,21 @@ final class SheetHeightModifierModelTests: XCTestCase {
   }
 
   func testSheetHeightModifierModel_Update_TopCancelledPan() {
-    sheetHeightModifierModel = SheetHeightModifierModel(sheetDetentsModel: sheetDetentsModel, initialSheetHeight: 500)
+    sheetHeightModifierModel = SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: 500
+    )
     let panValues: [PanValue] = PanRecords.topCancelledPan.panValues.suffix(9)
     processPanTest(panValues: panValues, expectedValues: PanRecords.topCancelledPan.expectedSheetHeightModifierFromModifierModel)
   }
 
   func testSheetHeightModifierModel_Update_BottomCancelledPan() {
-    sheetHeightModifierModel = SheetHeightModifierModel(sheetDetentsModel: sheetDetentsModel, initialSheetHeight: 100)
+    sheetHeightModifierModel = SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: 100
+    )
     processPanTest(
       panValues: PanRecords.bottomCancelledPan.panValues,
       expectedValues: PanRecords.bottomCancelledPan.expectedSheetHeightModifierFromModifierModel
@@ -45,7 +58,11 @@ final class SheetHeightModifierModelTests: XCTestCase {
   }
 
   func testSheetHeightModifierModel_Update_ReversedMidPan() {
-    sheetHeightModifierModel = SheetHeightModifierModel(sheetDetentsModel: sheetDetentsModel, initialSheetHeight: 100)
+    sheetHeightModifierModel = SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
+      sheetDetentsModel: sheetDetentsModel,
+      initialSheetHeight: 100
+    )
     processPanTest(
       panValues: PanRecords.reversedMidPan.panValues,
       expectedValues: PanRecords.reversedMidPan.expectedSheetHeightModifierFromModifierModel

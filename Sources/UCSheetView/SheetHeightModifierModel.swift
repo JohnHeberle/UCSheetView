@@ -11,7 +11,8 @@ final class SheetHeightModifierModel {
 
   // MARK: Lifecycle
 
-  init(sheetDetentsModel: SheetDetentsModel, initialSheetHeight: CGFloat) {
+  init(sheetConfiguration: UCSheetView.Configuration, sheetDetentsModel: SheetDetentsModel, initialSheetHeight: CGFloat) {
+    self.sheetConfiguration = sheetConfiguration
     self.sheetDetentsModel = sheetDetentsModel
     sheetHeight = initialSheetHeight
     sheetHeightModifier = SheetHeightModifier(updatedHeight: initialSheetHeight)
@@ -22,7 +23,7 @@ final class SheetHeightModifierModel {
   func update(translation: CGFloat, velocity: CGFloat, state: SheetHeightModifier.State) -> SheetHeightModifier {
     sheetHeightModifier.direction = velocity > 0 ? .down : .up
 
-    let translation = translation * -1
+    let translation = translation * (sheetConfiguration.origin == .bottom ? -1 : 1)
     let translationDelta = translation - previousTranslation
     previousTranslation = translation
     let modifier = getTranslationDeltaModifier(translationDelta: translationDelta)
@@ -57,6 +58,7 @@ final class SheetHeightModifierModel {
   private var maxPanBeyondDetentBounds: CGFloat = 24
   private var beyondDetentPanDecaySensitivity: CGFloat = 5
 
+  private let sheetConfiguration: UCSheetView.Configuration
   private let sheetDetentsModel: SheetDetentsModel
   private var sheetHeightModifier: SheetHeightModifier
   private var sheetHeight: CGFloat

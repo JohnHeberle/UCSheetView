@@ -88,27 +88,41 @@ public final class UCSheetView: UIView {
   private func setUpViews(with contentView: UIView) {
     for view in [dimmableBackgroundView, sheetBackgroundView] { addSubview(view) }
     NSLayoutConstraint.attatchAnchors(of: dimmableBackgroundView, to: self)
-    NSLayoutConstraint.attatchAnchors(of: sheetBackgroundView, to: self, for: [.leading, .trailing, .bottom])
     NSLayoutConstraint.activate([sheetHeightAnchor])
+
+    switch sheetConfiguration.origin {
+    case .bottom:
+      NSLayoutConstraint.attatchAnchors(of: sheetBackgroundView, to: self, for: [.leading, .trailing, .bottom])
+    case .top:
+      NSLayoutConstraint.attatchAnchors(of: sheetBackgroundView, to: self, for: [.leading, .trailing, .top])
+    }
 
     contentView.translatesAutoresizingMaskIntoConstraints = false
     for view in [grabberView, contentView] { sheetBackgroundView.contentView.addSubview(view) }
+    let resolvedContentView = sheetBackgroundView.contentView
+
+    switch sheetConfiguration.origin {
+    case .bottom:
+      NSLayoutConstraint.activate([
+        grabberView.topAnchor.constraint(equalTo: resolvedContentView.topAnchor, constant: 5).withPriority(.required, offset: -1),
+        contentView.topAnchor.constraint(equalTo: grabberView.bottomAnchor, constant: 12).withPriority(.required, offset: -1),
+        contentView.bottomAnchor.constraint(equalTo: resolvedContentView.bottomAnchor).withPriority(.required, offset: -2),
+      ])
+
+    case .top:
+      NSLayoutConstraint.activate([
+        grabberView.bottomAnchor.constraint(equalTo: resolvedContentView.bottomAnchor, constant: -5).withPriority(
+          .required,
+          offset: -1
+        ),
+        contentView.bottomAnchor.constraint(equalTo: grabberView.topAnchor, constant: -12).withPriority(.required, offset: -1),
+        contentView.topAnchor.constraint(equalTo: resolvedContentView.topAnchor).withPriority(.required, offset: -2),
+      ])
+    }
     NSLayoutConstraint.activate([
-      grabberView.topAnchor.constraint(equalTo: sheetBackgroundView.contentView.topAnchor, constant: 5).withPriority(
-        .required,
-        offset: -1
-      ),
-      grabberView.centerXAnchor.constraint(equalTo: sheetBackgroundView.contentView.centerXAnchor).withPriority(
-        .required,
-        offset: -1
-      ),
-      contentView.topAnchor.constraint(equalTo: grabberView.bottomAnchor, constant: 12).withPriority(.required, offset: -1),
-      contentView.bottomAnchor.constraint(equalTo: sheetBackgroundView.contentView.bottomAnchor).withPriority(
-        .required,
-        offset: -2
-      ),
+      grabberView.centerXAnchor.constraint(equalTo: resolvedContentView.centerXAnchor).withPriority(.required, offset: -1),
     ])
-    NSLayoutConstraint.attatchAnchors(of: contentView, to: sheetBackgroundView.contentView, for: [.leading, .trailing])
+    NSLayoutConstraint.attatchAnchors(of: contentView, to: resolvedContentView, for: [.leading, .trailing])
   }
 
   private func setUpGestureRecognizers() {
@@ -150,6 +164,12 @@ public final class UCSheetView: UIView {
           animations: { [weak self] in
             guard let self else { return }
             layoutIfNeeded()
+          },
+          completion: { [weak self] _ in
+            guard let self else { return }
+            if sheetHeightModifier.updatedHeight == 0 {
+              removeFromSuperview()
+            }
           }
         )
       }

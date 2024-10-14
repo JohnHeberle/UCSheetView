@@ -14,9 +14,10 @@ extension UCSheetView {
     // MARK: Lifecycle
 
     #if DEBUG
-    @_transparent
     init(
       detents: [SheetDetent],
+      origin: Origin = .bottom,
+      isDismissable: Bool = false,
       largestUnDimmedDetentIdentifier: SheetDetent.Identifier? = nil,
       maxDimmingAlpha: CGFloat = 0.35,
       backgroundColor: UIColor = .white,
@@ -28,6 +29,8 @@ extension UCSheetView {
       issueReporter: inout any IssueReportingProtocol
     ) {
       self.detents = detents
+      self.origin = origin
+      self.isDismissable = isDismissable
       self.largestUnDimmedDetentIdentifier = largestUnDimmedDetentIdentifier
       self.maxDimmingAlpha = maxDimmingAlpha
       self.backgroundColor = backgroundColor
@@ -44,6 +47,8 @@ extension UCSheetView {
     @_transparent
     public init(
       detents: [SheetDetent],
+      origin: Origin = .bottom,
+      isDismissable: Bool = false,
       largestUnDimmedDetentIdentifier: SheetDetent.Identifier? = nil,
       maxDimmingAlpha: CGFloat = 0.35,
       backgroundColor: UIColor = .white,
@@ -54,6 +59,8 @@ extension UCSheetView {
       shadowRadius: CGFloat = 12
     ) {
       self.detents = detents
+      self.origin = origin
+      self.isDismissable = isDismissable
       self.largestUnDimmedDetentIdentifier = largestUnDimmedDetentIdentifier
       self.maxDimmingAlpha = maxDimmingAlpha
       self.backgroundColor = backgroundColor
@@ -71,7 +78,13 @@ extension UCSheetView {
 
     // MARK: Public
 
+    public enum Origin {
+      case bottom, top
+    }
+
     public let detents: [SheetDetent]
+    public let origin: Origin
+    public let isDismissable: Bool
     public let largestUnDimmedDetentIdentifier: SheetDetent.Identifier?
     public let maxDimmingAlpha: CGFloat
     public let backgroundColor: UIColor

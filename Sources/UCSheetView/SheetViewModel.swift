@@ -28,6 +28,7 @@ final class SheetViewModel {
 
   func updateSheetPan(translation: CGFloat, velocity: CGFloat, state: SheetHeightModifier.State, cancelPan: (() -> Void)? = nil) {
     sheetHeightModifierModel = sheetHeightModifierModel ?? SheetHeightModifierModel(
+      sheetConfiguration: sheetConfiguration,
       sheetDetentsModel: sheetDetentsModel,
       initialSheetHeight: sheetHeight.value
     )
@@ -54,7 +55,8 @@ final class SheetViewModel {
 
   func setToDefaultDetent(animated: Bool = true) {
     let updatedSheetHeightModifier = SheetHeightModifier(
-      updatedHeight: sheetDetentsModel.getDetentHeight(forDetent: .default), animate: animated, state: .finished
+      updatedHeight: sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .default)), animate: animated,
+      state: .finished
     )
     sheetHeightModifier.send(updatedSheetHeightModifier)
   }

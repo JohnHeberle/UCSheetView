@@ -12,7 +12,7 @@ final class SheetDetentsModelTests: XCTestCase {
 
   // MARK: Internal
 
-  typealias DetentTest = (CGFloat, SheetHeightModifier.Direction, SheetDetent.Identifier)
+  typealias DetentTest = (CGFloat, SheetHeightModifier.Direction, SheetDetent.ResolvedIdentifier)
   typealias DimmmingTest = (CGFloat, CGFloat)
 
   let basicDetents: [SheetDetent] = [
@@ -26,50 +26,50 @@ final class SheetDetentsModelTests: XCTestCase {
     var sheetDetentsModel = SheetDetentsModel(containerHeight: 1000, sheetConfiguration: sheetConfiguration)
     XCTAssertEqual(sheetDetentsModel.minDetent.height, 200)
     XCTAssertEqual(sheetDetentsModel.maxDetent.height, 600)
-    XCTAssertEqual(sheetDetentsModel.selectedDetent, .default)
+    XCTAssertEqual(sheetDetentsModel.selectedDetent, .userDefined(identifier: .default))
     XCTAssertNil(sheetDetentsModel.dimmingHeights)
 
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .default), 200)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .medium), 400)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .large), 600)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .default)), 200)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .medium)), 400)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .large)), 600)
 
     let defaultDetentsTests: [DetentTest] = [
-      (190, .up, .default),
-      (190, .down, .default),
-      (210, .up, .default),
-      (210, .down, .default),
-      (300, .up, .medium),
-      (300, .down, .default),
-      (500, .up, .large),
-      (500, .down, .medium),
+      (190, .up, .userDefined(identifier: .default)),
+      (190, .down, .userDefined(identifier: .default)),
+      (210, .up, .userDefined(identifier: .default)),
+      (210, .down, .userDefined(identifier: .default)),
+      (300, .up, .userDefined(identifier: .medium)),
+      (300, .down, .userDefined(identifier: .default)),
+      (500, .up, .userDefined(identifier: .large)),
+      (500, .down, .userDefined(identifier: .medium)),
     ]
 
     processDetentTest(sheetDetentsModel: sheetDetentsModel, detentTests: defaultDetentsTests)
 
-    sheetDetentsModel.selectedDetent = .medium
-    let mediumDetentsTests: [(CGFloat, SheetHeightModifier.Direction, SheetDetent.Identifier)] = [
-      (390, .up, .medium),
-      (390, .down, .medium),
-      (410, .up, .medium),
-      (410, .down, .medium),
-      (300, .up, .medium),
-      (300, .down, .default),
-      (500, .up, .large),
-      (500, .down, .medium),
+    sheetDetentsModel.selectedDetent = .userDefined(identifier: .medium)
+    let mediumDetentsTests: [(CGFloat, SheetHeightModifier.Direction, SheetDetent.ResolvedIdentifier)] = [
+      (390, .up, .userDefined(identifier: .medium)),
+      (390, .down, .userDefined(identifier: .medium)),
+      (410, .up, .userDefined(identifier: .medium)),
+      (410, .down, .userDefined(identifier: .medium)),
+      (300, .up, .userDefined(identifier: .medium)),
+      (300, .down, .userDefined(identifier: .default)),
+      (500, .up, .userDefined(identifier: .large)),
+      (500, .down, .userDefined(identifier: .medium)),
     ]
 
     processDetentTest(sheetDetentsModel: sheetDetentsModel, detentTests: mediumDetentsTests)
 
-    sheetDetentsModel.selectedDetent = .large
-    let largeDetentsTests: [(CGFloat, SheetHeightModifier.Direction, SheetDetent.Identifier)] = [
-      (590, .up, .large),
-      (590, .down, .large),
-      (610, .up, .large),
-      (610, .down, .large),
-      (500, .up, .large),
-      (500, .down, .medium),
-      (300, .up, .medium),
-      (300, .down, .default),
+    sheetDetentsModel.selectedDetent = .userDefined(identifier: .large)
+    let largeDetentsTests: [DetentTest] = [
+      (590, .up, .userDefined(identifier: .large)),
+      (590, .down, .userDefined(identifier: .large)),
+      (610, .up, .userDefined(identifier: .large)),
+      (610, .down, .userDefined(identifier: .large)),
+      (500, .up, .userDefined(identifier: .large)),
+      (500, .down, .userDefined(identifier: .medium)),
+      (300, .up, .userDefined(identifier: .medium)),
+      (300, .down, .userDefined(identifier: .default)),
     ]
 
     processDetentTest(sheetDetentsModel: sheetDetentsModel, detentTests: largeDetentsTests)
@@ -89,9 +89,9 @@ final class SheetDetentsModelTests: XCTestCase {
   func testSheetDetentsModel_MinMax() {
     let sheetConfiguration = UCSheetView.Configuration(detents: basicDetents)
     let sheetDetentsModel = SheetDetentsModel(containerHeight: 1000, sheetConfiguration: sheetConfiguration)
-    XCTAssertEqual(sheetDetentsModel.minDetent.identifier, .default)
+    XCTAssertEqual(sheetDetentsModel.minDetent.identifier, .userDefined(identifier: .default))
     XCTAssertEqual(sheetDetentsModel.minDetent.height, 200)
-    XCTAssertEqual(sheetDetentsModel.maxDetent.identifier, .large)
+    XCTAssertEqual(sheetDetentsModel.maxDetent.identifier, .userDefined(identifier: .large))
     XCTAssertEqual(sheetDetentsModel.maxDetent.height, 600)
   }
 
@@ -107,10 +107,10 @@ final class SheetDetentsModelTests: XCTestCase {
 
     XCTAssertEqual(sheetDetentsModel.minDetent.height, 200)
     XCTAssertEqual(sheetDetentsModel.maxDetent.height, 600)
-    XCTAssertEqual(sheetDetentsModel.selectedDetent, .default)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .default), 200)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .medium), 400)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .large), 600)
+    XCTAssertEqual(sheetDetentsModel.selectedDetent, .userDefined(identifier: .default))
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .default)), 200)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .medium)), 400)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .large)), 600)
   }
 
   func testSheetDetentsModel_InitWithIdenticalDetentIdentifiers_NonDefault() {
@@ -125,9 +125,9 @@ final class SheetDetentsModelTests: XCTestCase {
 
     XCTAssertEqual(sheetDetentsModel.minDetent.height, 200)
     XCTAssertEqual(sheetDetentsModel.maxDetent.height, 600)
-    XCTAssertEqual(sheetDetentsModel.selectedDetent, .default)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .default), 200)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .large), 600)
+    XCTAssertEqual(sheetDetentsModel.selectedDetent, .userDefined(identifier: .default))
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .default)), 200)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .large)), 600)
   }
 
   func testSheetDetentsModel_InitWithIdenticalDetentIdentifiers_Default() {
@@ -142,9 +142,9 @@ final class SheetDetentsModelTests: XCTestCase {
 
     XCTAssertEqual(sheetDetentsModel.minDetent.height, 200)
     XCTAssertEqual(sheetDetentsModel.maxDetent.height, 600)
-    XCTAssertEqual(sheetDetentsModel.selectedDetent, .default)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .default), 200)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .large), 600)
+    XCTAssertEqual(sheetDetentsModel.selectedDetent, .userDefined(identifier: .default))
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .default)), 200)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .large)), 600)
   }
 
   func testSheetDetentsModel_InitWithZeroContainerHeight() {
@@ -157,10 +157,10 @@ final class SheetDetentsModelTests: XCTestCase {
     let sheetDetentsModel = SheetDetentsModel(containerHeight: 0, sheetConfiguration: sheetConfiguration)
     XCTAssertEqual(sheetDetentsModel.minDetent.height, 0)
     XCTAssertEqual(sheetDetentsModel.maxDetent.height, 0)
-    XCTAssertEqual(sheetDetentsModel.selectedDetent, .default)
+    XCTAssertEqual(sheetDetentsModel.selectedDetent, .userDefined(identifier: .default))
 
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .default), 0)
-    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .medium), 0)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .default)), 0)
+    XCTAssertEqual(sheetDetentsModel.getDetentHeight(forDetent: .userDefined(identifier: .medium)), 0)
   }
 
   // MARK: Private

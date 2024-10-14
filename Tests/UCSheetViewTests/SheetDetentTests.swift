@@ -41,7 +41,7 @@ final class SheetDetentTests: XCTestCase {
     }
 
     for identifier in sheetDetentIdentifiers {
-      let sheetDetent: SheetDetent = .absolute(identifier: identifier, offsetFromTop: 20)
+      let sheetDetent: SheetDetent = .absolute(identifier: identifier, offsetFromMaxHeight: 20)
       XCTAssertEqual(sheetDetent.identifier, identifier)
       XCTAssertEqual(sheetDetent.resolver(100), 80)
     }

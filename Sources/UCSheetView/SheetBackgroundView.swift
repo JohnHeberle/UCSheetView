@@ -19,7 +19,9 @@ final class SheetBackgroundView: UIView {
 
     layer.masksToBounds = false
     layer.shadowOffset = .zero
-    layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    layer.maskedCorners = sheetConfiguration.origin == .bottom
+      ? [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+      : [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
 
     backgroundColor = sheetConfiguration.backgroundColor
     layer.cornerRadius = sheetConfiguration.cornerRadius

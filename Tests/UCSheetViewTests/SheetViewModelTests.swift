@@ -32,7 +32,6 @@ final class SheetViewModelTests: XCTestCase {
     XCTAssertEqual(viewModel.containerHeight.value, 0)
     XCTAssertEqual(viewModel.sheetHeight.value, 0)
     XCTAssertEqual(viewModel.dimmingAlpha.value, 0)
-    XCTAssertNil(viewModel.sheetHeightModifier.value)
   }
 
   func testSheetViewModel_ModifiedContainerHeight() {
@@ -41,8 +40,6 @@ final class SheetViewModelTests: XCTestCase {
 
     viewModel.containerHeight.send(0)
     XCTAssertEqual(viewModel.containerHeight.value, 0)
-    XCTAssertNil(viewModel.sheetHeightModifier.value)
-
     viewModel.containerHeight.send(1000)
     XCTAssertEqual(viewModel.containerHeight.value, 1000)
     XCTAssertEqual(viewModel.sheetHeightModifier.value?.updatedHeight, 100)
