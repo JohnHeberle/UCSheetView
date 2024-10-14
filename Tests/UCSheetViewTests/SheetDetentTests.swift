@@ -13,9 +13,9 @@ final class SheetDetentTests: XCTestCase {
 
   func testSheetDetent_FractionalInit() {
     for identifier in sheetDetentIdentifiers {
-      let sheetDetent: SheetDetent = .fractional(identifier: identifier, divisor: 20)
+      let sheetDetent: SheetDetent = .fractional(identifier: identifier, divisor: 2)
       XCTAssertEqual(sheetDetent.identifier, identifier)
-      XCTAssertEqual(sheetDetent.resolver(100), 5)
+      XCTAssertEqual(sheetDetent.resolver(100), 50)
     }
   }
 
@@ -23,13 +23,13 @@ final class SheetDetentTests: XCTestCase {
     for identifier in sheetDetentIdentifiers {
       let sheetDetent: SheetDetent = .fractional(identifier: identifier, divisor: 0)
       XCTAssertEqual(sheetDetent.identifier, identifier)
-      XCTAssertEqual(sheetDetent.resolver(100), 0)
+      XCTAssertEqual(sheetDetent.resolver(100), SheetDetent.minSheetHeight)
     }
 
     for identifier in sheetDetentIdentifiers {
       let sheetDetent: SheetDetent = .fractional(identifier: identifier, divisor: -1)
       XCTAssertEqual(sheetDetent.identifier, identifier)
-      XCTAssertEqual(sheetDetent.resolver(100), 0)
+      XCTAssertEqual(sheetDetent.resolver(100), SheetDetent.minSheetHeight)
     }
   }
 

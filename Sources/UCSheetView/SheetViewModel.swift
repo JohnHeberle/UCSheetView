@@ -68,7 +68,7 @@ final class SheetViewModel {
   private var subscriptions = Set<AnyCancellable>()
 
   private func initializeSheetHeight() {
-    containerHeight.first(where: { $0 != 0 }).sink { [weak self] containerHeight in
+    containerHeight.removeDuplicates().sink { [weak self] containerHeight in
       guard let self else { return }
       sheetDetentsModel = SheetDetentsModel(containerHeight: containerHeight, sheetConfiguration: sheetConfiguration)
       setToDefaultDetent(animated: false)

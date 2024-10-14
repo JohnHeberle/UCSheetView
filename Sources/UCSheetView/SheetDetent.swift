@@ -25,16 +25,25 @@ public struct SheetDetent: Equatable {
   public let identifier: Identifier
 
   public static func fractional(identifier: Identifier, divisor: CGFloat) -> Self {
-    guard divisor > 0 else { return .init(identifier: identifier, resolver: { _ in 0 }) }
-    return .init(identifier: identifier, resolver: { $0 / divisor })
+    .init(identifier: identifier, resolver: { containerHeight in
+      if divisor <= 0 {
+        SheetDetent.minSheetHeight
+      } else {
+        min(max(SheetDetent.minSheetHeight, containerHeight / divisor), containerHeight)
+      }
+    })
   }
 
   public static func absolute(identifier: Identifier, height: CGFloat) -> Self {
-    .init(identifier: identifier, resolver: { _ in height })
+    .init(identifier: identifier, resolver: { containerHeight in
+      min(max(SheetDetent.minSheetHeight, height), containerHeight)
+    })
   }
 
   public static func absolute(identifier: Identifier, offsetFromTop offset: CGFloat) -> Self {
-    .init(identifier: identifier, resolver: { $0 - offset })
+    .init(identifier: identifier, resolver: { containerHeight in
+      min(max(SheetDetent.minSheetHeight, containerHeight - offset), containerHeight)
+    })
   }
 
   public static func ==(lhs: SheetDetent, rhs: SheetDetent) -> Bool {
@@ -42,6 +51,8 @@ public struct SheetDetent: Equatable {
   }
 
   // MARK: Internal
+
+  static let minSheetHeight: CGFloat = 22
 
   let resolver: (CGFloat) -> CGFloat
 

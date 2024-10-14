@@ -43,13 +43,16 @@ public final class UCSheetView: UIView {
   // MARK: Internal
 
   let viewModel: SheetViewModel
-  
+
   // MARK: Private
 
   private let sheetConfiguration: Configuration
   private var subscriptions = Set<AnyCancellable>()
-  
-  private lazy var sheetHeightAnchor = sheetBackgroundView.heightAnchor.constraint(equalToConstant: 0).withPriority(.required, offset: -1)
+
+  private lazy var sheetHeightAnchor = sheetBackgroundView.heightAnchor.constraint(equalToConstant: 0).withPriority(
+    .required,
+    offset: -1
+  )
 
   private var dimmableBackgroundView: UIView = {
     var dimmableBackgroundView = UIView()
