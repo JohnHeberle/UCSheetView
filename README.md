@@ -14,11 +14,11 @@ UCSheetView aims to resolve this by providing a configurable UIView subclass tha
 
 | Bottom Sheet | Bottom Sheet Above Subview |
 |-|-|
-|[<img src="https://github.com/user-attachments/assets/9757647e-392d-4170-aaa1-92997bc1dc70" width="400" />](https://github.com/user-attachments/assets/9757647e-392d-4170-aaa1-92997bc1dc70)|[<img src="https://github.com/user-attachments/assets/1a7cac45-96f0-4663-b706-3b5c9bb848a0" width="400" />](https://github.com/user-attachments/assets/1a7cac45-96f0-4663-b706-3b5c9bb848a0)|
+|[<img src="https://github.com/user-attachments/assets/9757647e-392d-4170-aaa1-92997bc1dc70" width="300" />](https://github.com/user-attachments/assets/9757647e-392d-4170-aaa1-92997bc1dc70)|[<img src="https://github.com/user-attachments/assets/1a7cac45-96f0-4663-b706-3b5c9bb848a0" width="300" />](https://github.com/user-attachments/assets/1a7cac45-96f0-4663-b706-3b5c9bb848a0)|
 
 | Top Sheet Plus Dismiss | Top Sheet Below Subview |
 |-|-|
-|[<img src="https://github.com/user-attachments/assets/dc83a3dc-cf5e-4eee-b029-bddfa93a111e" width="400" />](https://github.com/user-attachments/assets/dc83a3dc-cf5e-4eee-b029-bddfa93a111e)|[<img src="https://github.com/user-attachments/assets/2c056543-c022-43ef-a366-69a8e4127d9a" width="400" />](https://github.com/user-attachments/assets/2c056543-c022-43ef-a366-69a8e4127d9a)|
+|[<img src="https://github.com/user-attachments/assets/dc83a3dc-cf5e-4eee-b029-bddfa93a111e" width="300" />](https://github.com/user-attachments/assets/dc83a3dc-cf5e-4eee-b029-bddfa93a111e)|[<img src="https://github.com/user-attachments/assets/2c056543-c022-43ef-a366-69a8e4127d9a" width="300" />](https://github.com/user-attachments/assets/2c056543-c022-43ef-a366-69a8e4127d9a)|
 
 </div>
 
