@@ -29,7 +29,7 @@ Definitions:
 - detent: The height at which the sheet view will rest when changing between heights.
 
 UCSheetView.Configuration:
-- (REQUIRED) detents [SheetDetent]: An array of user-specified detents. Each detent must have a distinct identifier of the following type (.default, .xSmall, .small, .medium, .large, .xLarge). A detent will be ignored if it has the same identifier as an existing detent. SheetDetent uses the height of the container to resolve detent heights at runtime. A detent with a resolved height greater than the container's height or less than the minimum sheet height will be clamped to these values, respectively. The detents are specified via the following static initializers.
+- (REQUIRED) detents: An array of user-specified detents. Each detent must have a distinct identifier of the following type (.default, .xSmall, .small, .medium, .large, .xLarge). A detent will be ignored if it has the same identifier as an existing detent. SheetDetent uses the height of the container to resolve detent heights at runtime. A detent with a resolved height greater than the container's height or less than the minimum sheet height will be clamped to these values, respectively. The detents are specified via the following static initializers.
   - .fractional(identifier: Identifier, divisor: CGFloat): Creates a detent at `container height / divisor`. 
   - .absolute(identifier: Identifier, height: CGFloat): Creates a detent with an absolute height of `height`. 
   - .absolute(identifier: Identifier, offsetFromMaxHeight offset: CGFloat): Creates a detent with an absolute height of `container height - offset`.
